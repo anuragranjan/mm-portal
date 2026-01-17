@@ -11,6 +11,11 @@ const MemberModal = ({ isOpen, onClose, member = null, onSave }) => {
         phone: '',
         address: '',
         pan: '',
+        yearOfGraduation: '',
+        currentEmployment: '',
+        designation: '',
+        photo: '',
+        joinDate: new Date().toISOString().split('T')[0], // Default to today
         role: 'Member',
         status: 'Active'
     });
@@ -19,7 +24,12 @@ const MemberModal = ({ isOpen, onClose, member = null, onSave }) => {
         if (member) {
             setFormData(member);
         } else {
-            setFormData({ name: '', email: '', phone: '', address: '', pan: '', role: 'Member', status: 'Active' });
+            setFormData({
+                name: '', email: '', phone: '', address: '', pan: '',
+                yearOfGraduation: '', currentEmployment: '', designation: '', photo: '',
+                joinDate: new Date().toISOString().split('T')[0],
+                role: 'Member', status: 'Active'
+            });
         }
     }, [member]);
 
@@ -84,6 +94,70 @@ const MemberModal = ({ isOpen, onClose, member = null, onSave }) => {
                             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                             placeholder="123 Main St"
                         />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            label="Year of Graduation"
+                            value={formData.yearOfGraduation}
+                            onChange={(e) => setFormData({ ...formData, yearOfGraduation: e.target.value })}
+                            placeholder="e.g. 2020"
+                        />
+                        <Input
+                            label="Joining Date"
+                            type="date"
+                            value={formData.joinDate}
+                            onChange={(e) => setFormData({ ...formData, joinDate: e.target.value })}
+                            required
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            label="Current Employment"
+                            value={formData.currentEmployment}
+                            onChange={(e) => setFormData({ ...formData, currentEmployment: e.target.value })}
+                            placeholder="Company Name"
+                        />
+                        <Input
+                            label="Designation"
+                            value={formData.designation}
+                            onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                            placeholder="Role/Title"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Photograph</label>
+                        <div className="flex items-center gap-4">
+                            {formData.photo && (
+                                <img
+                                    src={formData.photo}
+                                    alt="Preview"
+                                    className="w-16 h-16 rounded-full object-cover border border-slate-200"
+                                />
+                            )}
+                            <input
+                                type="file"
+                                accept="image/png, image/jpeg, image/jpg"
+                                className="block w-full text-sm text-slate-500
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-full file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-primary-50 file:text-primary-700
+                                  hover:file:bg-primary-100"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                            setFormData({ ...formData, photo: reader.result });
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
