@@ -72,7 +72,7 @@ const MembersList = () => {
                     <p className="text-slate-500">Manage your NGO members here.</p>
                 </div>
                 <div className="flex gap-3">
-                    <Button variant="secondary" onClick={() => setIsImportModalOpen(true)}>Import PDF</Button>
+                    <Button variant="secondary" onClick={() => setIsImportModalOpen(true)}>Import</Button>
                     <Button onClick={openAddModal}>Add New Member</Button>
                 </div>
             </div>
@@ -99,10 +99,9 @@ const MembersList = () => {
                         <thead className="bg-slate-50 text-slate-900 font-medium">
                             <tr>
                                 <th className="px-6 py-4">Name</th>
+                                <th className="px-6 py-4">Email Id</th>
                                 <th className="px-6 py-4">Phone</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4">Plan</th>
-                                <th className="px-6 py-4">Join Date</th>
+                                <th className="px-6 py-4">PAN Number</th>
                                 <th className="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
@@ -124,22 +123,12 @@ const MembersList = () => {
                                             )}
                                             <div>
                                                 <div className="font-medium text-slate-900">{member.name}</div>
-                                                <div className="text-slate-400 text-xs">{member.email}</div>
                                             </div>
                                         </div>
                                     </td>
-
+                                    <td className="px-6 py-4">{member.email}</td>
                                     <td className="px-6 py-4">{member.phone}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                      ${member.status === 'Active' ? 'bg-emerald-100 text-emerald-800' :
-                                                member.status === 'Inactive' ? 'bg-slate-100 text-slate-800' :
-                                                    'bg-amber-100 text-amber-800'}`}>
-                                            {member.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4">{member.plan}</td>
-                                    <td className="px-6 py-4">{member.joinDate}</td>
+                                    <td className="px-6 py-4">{member.pan}</td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2">
                                             <button
