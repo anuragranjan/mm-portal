@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
-import Card from '../../components/ui/Card';
-import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import { Search, Filter, MoreVertical, Edit, Trash2 } from 'lucide-react';
-import MemberModal from './MemberModal';
+import React, { useState, useEffect } from 'react';
 
-import ImportMemberModal from './ImportMemberModal';
+// ... other imports ...
 
 const MembersList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,13 +8,25 @@ const MembersList = () => {
     const [editingMember, setEditingMember] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [members, setMembers] = useState([
-        { id: 1, name: 'John Doe', email: 'john@example.com', phone: '+1 (555) 123-4567', address: '123 Main St, New York, NY', pan: 'ABCDE1234F', yearOfGraduation: '2018', currentEmployment: 'Software Engineer', designation: 'Senior Dev', photo: '', status: 'Active', joinDate: '2023-01-15', plan: 'Premium' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '+1 (555) 987-6543', address: '456 Oak Ave, Los Angeles, CA', pan: 'FGHIJ5678K', yearOfGraduation: '2019', currentEmployment: 'Data Scientist', designation: 'Lead', photo: '', status: 'Inactive', joinDate: '2023-02-20', plan: 'Basic' },
-        { id: 3, name: 'Mike Johnson', email: 'mike@example.com', phone: '+1 (555) 456-7890', address: '789 Pine Rd, Chicago, IL', pan: 'LMNOP9012Q', yearOfGraduation: '2020', currentEmployment: 'Product Manager', designation: 'VP', photo: '', status: 'Active', joinDate: '2023-03-10', plan: 'Premium' },
-        { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', phone: '+1 (555) 234-5678', address: '321 Elm St, Houston, TX', pan: 'RSTUV3456W', yearOfGraduation: '2021', currentEmployment: 'Designer', designation: 'UI/UX', photo: '', status: 'Active', joinDate: '2023-04-05', plan: 'Basic' },
-        { id: 5, name: 'David Brown', email: 'david@example.com', phone: '+1 (555) 876-5432', address: '654 Maple Dr, Miami, FL', pan: 'XYZAB7890C', yearOfGraduation: '2022', currentEmployment: 'Teacher', designation: 'HOD', photo: '', status: 'Pending', joinDate: '2023-05-12', plan: 'Basic' },
-    ]);
+    // Initialize state from localStorage or fallback to default mock data
+    const [members, setMembers] = useState(() => {
+        const savedMembers = localStorage.getItem('mm-members');
+        if (savedMembers) {
+            return JSON.parse(savedMembers);
+        }
+        return [
+            { id: 1, name: 'John Doe', email: 'john@example.com', phone: '+1 (555) 123-4567', address: '123 Main St, New York, NY', pan: 'ABCDE1234F', yearOfGraduation: '2018', currentEmployment: 'Software Engineer', designation: 'Senior Dev', photo: '', status: 'Active', joinDate: '2023-01-15', plan: 'Premium' },
+            { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '+1 (555) 987-6543', address: '456 Oak Ave, Los Angeles, CA', pan: 'FGHIJ5678K', yearOfGraduation: '2019', currentEmployment: 'Data Scientist', designation: 'Lead', photo: '', status: 'Inactive', joinDate: '2023-02-20', plan: 'Basic' },
+            { id: 3, name: 'Mike Johnson', email: 'mike@example.com', phone: '+1 (555) 456-7890', address: '789 Pine Rd, Chicago, IL', pan: 'LMNOP9012Q', yearOfGraduation: '2020', currentEmployment: 'Product Manager', designation: 'VP', photo: '', status: 'Active', joinDate: '2023-03-10', plan: 'Premium' },
+            { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', phone: '+1 (555) 234-5678', address: '321 Elm St, Houston, TX', pan: 'RSTUV3456W', yearOfGraduation: '2021', currentEmployment: 'Designer', designation: 'UI/UX', photo: '', status: 'Active', joinDate: '2023-04-05', plan: 'Basic' },
+            { id: 5, name: 'David Brown', email: 'david@example.com', phone: '+1 (555) 876-5432', address: '654 Maple Dr, Miami, FL', pan: 'XYZAB7890C', yearOfGraduation: '2022', currentEmployment: 'Teacher', designation: 'HOD', photo: '', status: 'Pending', joinDate: '2023-05-12', plan: 'Basic' },
+        ];
+    });
+
+    // Sync to localStorage whenever members change
+    useEffect(() => {
+        localStorage.setItem('mm-members', JSON.stringify(members));
+    }, [members]);
 
     const handleAddMember = (newMember) => {
         const id = Math.max(...members.map(m => m.id)) + 1;
